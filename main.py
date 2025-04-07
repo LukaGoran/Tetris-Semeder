@@ -3,31 +3,43 @@ import sys
 from game import Game
 from colors import Colors
 
+# Inicializace pygame
 pygame.init()
 
+# Nastavení fontu a textových nápisů
 title_font = pygame.font.Font(None, 40)
 score_surface = title_font.render("Score", True, Colors.bila)
 next_surface = title_font.render("Next", True, Colors.bila)
 game_over_surface = title_font.render("GAME OVER", True, Colors.bila)
+high_score_surface = title_font.render("High Score", True, Colors.bila)
 
+# Obdélníky pro zobrazení skóre a dalšího bloku
 score_rect = pygame.Rect(320, 55, 170, 60)
+high_score_rect = pygame.Rect(320, 500, 170, 65)
 next_rect = pygame.Rect(320, 215, 170, 180)
 
+# Vytvoření herního okna
 screen = pygame.display.set_mode((500, 620))
 pygame.display.set_caption("Python Tetris")
 
+# Hodiny pro řízení FPS
 clock = pygame.time.Clock()
 
+# Vytvoření instance hry
 game = Game()
 
+# Vlastní událost pro automatický pád bloku dolů
 GAME_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(GAME_UPDATE, 200)
 
+# Hlavní herní smyčka
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        # Klávesové vstupy
         if event.type == pygame.KEYDOWN:
             if game.game_over == True:
                 game.game_over = False
@@ -41,24 +53,49 @@ while True:
                 game.update_score(0, 1)
             if event.key == pygame.K_UP and game.game_over == False:
                 game.rotate()
+
+        # Automatický pohyb bloku dolů
         if event.type == GAME_UPDATE and game.game_over == False:
             game.move_down()
 
-    # Drawing
+    # Výpočet a vykreslení skóre
     score_value_surface = title_font.render(str(game.score), True, Colors.bila)
+    high_score_value_surface = title_font.render(str(game.high_score), True, Colors.bila)
 
-    screen.fill(Colors.cerna)
+    # Vyplnění pozadí barvou
+    screen.fill(Colors.lososova)
+
+    # Vykreslení nápisů
     screen.blit(score_surface, (365, 20, 50, 50))
     screen.blit(next_surface, (375, 180, 50, 50))
+    screen.blit(high_score_surface,(330, 470, 170, 65))
 
-    if game.game_over == True:
-        screen.blit(game_over_surface, (320, 450, 50, 50))
-
+    # Rámeček a text pro skóre
     pygame.draw.rect(screen, Colors.svetla_modra, score_rect, 0, 10)
-    screen.blit(score_value_surface, score_value_surface.get_rect(centerx=score_rect.centerx,
-                                                                  centery=score_rect.centery))
+    screen.blit(score_value_surface, score_value_surface.get_rect(centerx=score_rect.centerx, centery=score_rect.centery))
+
+    # Rámeček a text pro high score
+    pygame.draw.rect(screen, Colors.svetla_modra, high_score_rect, 0, 10)  # nove high skore
+    screen.blit(high_score_value_surface, high_score_value_surface.get_rect(centerx=high_score_rect.centerx, centery=high_score_rect.centery))
+
+    # Rámeček pro další blok
     pygame.draw.rect(screen, Colors.svetla_modra, next_rect, 0, 10)
+
+    # Vykreslení herního pole a bloků
     game.draw(screen)
 
+    # Aktualizace obrazovky
     pygame.display.update()
+
+    # Omezení na 60 snímků za sekundu
     clock.tick(60)
+    #game over
+    if game.game_over == True:
+        screen.fill(Colors.cerna)
+        screen.blit(game_over_surface, (160, 300, 50, 50))
+        pygame.display.flip()
+
+        pygame.time.wait(500)
+
+        pygame.quit()
+

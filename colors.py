@@ -1,4 +1,5 @@
 class Colors:
+	#barvy blocku
 	tmava_seda = (26, 31, 40)
 	zelena = (0, 255, 0)
 	cervena = (255, 0, 0)
@@ -7,10 +8,12 @@ class Colors:
 	fialova = (166, 0, 247)
 	tyrkysova = (21, 204, 209)
 	modra = (0, 0, 255)
+	#barvy na pozadí
 	bila = (255, 255, 255)
 	tmava_modra = (44, 44, 127)
 	svetla_modra = (59, 85, 162)
 	cerna = (0, 0, 0)
+	lososova = (255, 102, 102)
 
 	@classmethod
 	def get_cell_colors(cls):
