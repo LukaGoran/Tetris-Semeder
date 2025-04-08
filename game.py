@@ -97,14 +97,6 @@ class Game:
         if self.block_fits() == False:
             self.game_over = True
 
-    def reset(self):
-        # Resetuje celou hru na začátek
-        self.grid.reset()
-        self.blocks = [IBlock(), JBlock(), LBlock(), OBlock(), SBlock(), TBlock(), ZBlock()]
-        self.current_block = self.get_random_block()
-        self.next_block = self.get_random_block()
-        self.score = 0
-
     def block_fits(self):
         # Kontroluje, jestli blok může být na aktuální pozici (nenaráží)
         tiles = self.current_block.get_cell_positions()
@@ -116,10 +108,9 @@ class Game:
     def rotate(self):
         #otočí blok
         self.current_block.rotate()
-        #if self.block_inside() == False or self.block_fits() == False:
-        #    self.current_block.undo_rotation()
-       # else:
-        #    self.rotate_sound.play()
+        if self.block_inside() == False or self.block_fits() == False:
+            self.current_block.undo_rotation()
+
 
     def block_inside(self):
         # Kontroluje, jestli je blok uvnitř hracího pole

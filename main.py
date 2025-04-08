@@ -30,20 +30,18 @@ game = Game()
 
 # Vlastní událost pro automatický pád bloku dolů
 GAME_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(GAME_UPDATE, 200)
+initial_speed = 500
+pygame.time.set_timer(GAME_UPDATE, initial_speed)
 
 # Hlavní herní smyčka
 while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
         # Klávesové vstupy
         if event.type == pygame.KEYDOWN:
             if game.game_over == True:
                 game.game_over = False
                 game.reset()
+                pygame.time.set_timer(GAME_UPDATE, initial_speed)
             if event.key == pygame.K_LEFT and game.game_over == False:
                 game.move_left()
             if event.key == pygame.K_RIGHT and game.game_over == False:
@@ -58,6 +56,14 @@ while True:
         if event.type == GAME_UPDATE and game.game_over == False:
             game.move_down()
 
+            if game.score > 1500:
+                faster_speed = 200
+                pygame.time.set_timer(GAME_UPDATE, faster_speed)
+                if game.score > 3000:
+                    faster_speed = 100
+                    pygame.time.set_timer(GAME_UPDATE, faster_speed)
+
+
     # Výpočet a vykreslení skóre
     score_value_surface = title_font.render(str(game.score), True, Colors.bila)
     high_score_value_surface = title_font.render(str(game.high_score), True, Colors.bila)
@@ -68,18 +74,18 @@ while True:
     # Vykreslení nápisů
     screen.blit(score_surface, (365, 20, 50, 50))
     screen.blit(next_surface, (375, 180, 50, 50))
-    screen.blit(high_score_surface,(330, 470, 170, 65))
+    screen.blit(high_score_surface, (330, 470, 170, 65))
 
     # Rámeček a text pro skóre
-    pygame.draw.rect(screen, Colors.svetla_modra, score_rect, 0, 10)
+    pygame.draw.rect(screen, Colors.svetla_modra, score_rect, 0, 30)
     screen.blit(score_value_surface, score_value_surface.get_rect(centerx=score_rect.centerx, centery=score_rect.centery))
 
     # Rámeček a text pro high score
-    pygame.draw.rect(screen, Colors.svetla_modra, high_score_rect, 0, 10)  # nove high skore
+    pygame.draw.rect(screen, Colors.svetla_modra, high_score_rect, 0, 30)  # nove high skore
     screen.blit(high_score_value_surface, high_score_value_surface.get_rect(centerx=high_score_rect.centerx, centery=high_score_rect.centery))
 
     # Rámeček pro další blok
-    pygame.draw.rect(screen, Colors.svetla_modra, next_rect, 0, 10)
+    pygame.draw.rect(screen, Colors.svetla_modra, next_rect, 0, 100)
 
     # Vykreslení herního pole a bloků
     game.draw(screen)
@@ -92,10 +98,19 @@ while True:
     #game over
     if game.game_over == True:
         screen.fill(Colors.cerna)
-        screen.blit(game_over_surface, (160, 300, 50, 50))
+        pygame.draw.rect(screen, Colors.fialova, [150, 90, 200, 100], 10, 10)
+        pygame.draw.rect(screen, Colors.cervena, [150, 243, 200, 100], 10, 10)
+        pygame.draw.rect(screen, Colors.modra, [150, 400, 200, 100], 10, 10)
+        screen.blit(game_over_surface, (165, 280, 50, 50))
+        screen.blit(high_score_surface, (175, 110, 50, 50))
+        screen.blit(high_score_value_surface, (215, 150, 200, 200))
+        screen.blit(score_surface, (210, 420, 50, 50))
+        score_value_surface = title_font.render(str(game.score), True, Colors.bila)
+        screen.blit(score_value_surface, score_value_surface.get_rect(center=(250, 470)))
         pygame.display.flip()
 
-        pygame.time.wait(500)
+        pygame.time.wait(5000)
 
         pygame.quit()
+        sys.exit()
 

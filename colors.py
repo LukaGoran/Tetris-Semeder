@@ -8,9 +8,10 @@ class Colors:
 	fialova = (166, 0, 247)
 	tyrkysova = (21, 204, 209)
 	modra = (0, 0, 255)
-	#barvy na pozadí
+	#barvy čísel a rectanglu
 	bila = (255, 255, 255)
 	tmava_modra = (44, 44, 127)
+	#barvy na pozadí
 	svetla_modra = (59, 85, 162)
 	cerna = (0, 0, 0)
 	lososova = (255, 102, 102)
