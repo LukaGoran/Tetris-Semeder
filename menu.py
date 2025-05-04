@@ -93,3 +93,5 @@ if __name__ == "__main__":
     menu.run()
     pygame.quit()
     sys.exit()
+
+    #toto je menu
