@@ -27,6 +27,7 @@ class Main:
         pygame.time.set_timer(self.GAME_UPDATE, self.initial_speed)
 
     def run(self):
+        pygame.display.set_caption("Tetris")
         running = True
         while running:
             for event in pygame.event.get():

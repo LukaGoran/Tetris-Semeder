@@ -7,7 +7,6 @@ class TetrisMenu:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((500, 622))
-        pygame.display.set_caption("Tetris Menu")
 
         # Načtení pozadí
         self.background = pygame.image.load("image/MenuC.png")
@@ -22,6 +21,7 @@ class TetrisMenu:
 
     def draw_menu(self):
         self.screen.blit(self.background, (0, 0))
+        pygame.display.set_caption("Tetris Menu")
 
         # Titulek
         title = self.title_font.render("TETRIS", True, Colors.modra)
